@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../bitcoin-library-backend"
+		},
+		{
+			"path": "../btc-library-backend"
+		},
+		{
+			"path": "../add-resources"
+		}
+	],
+	"settings": {}
+}
