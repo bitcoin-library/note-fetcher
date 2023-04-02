@@ -14,7 +14,7 @@ const documentExists = async (uri) => {
 
 export default async (documents) => {
   const filteredDocuments = documents.filter(
-    (doc) => documentExists(doc.uri)
+    (doc) => !documentExists(doc.uri)
   );
 
   let response = await index.addDocuments(filteredDocuments, { primaryKey: "id" });
