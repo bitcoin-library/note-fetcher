@@ -1,7 +1,7 @@
 import { pollRelay } from "./pollRelay.js";
-import { parseEvent } from "./src/parseEvent.js";
-import addDocuments from "./src/search/addDocuments.js";
-import { transform } from "./src/transform.js";
+import { parseEvent } from "./etl/parseEvent.js";
+import addDocuments from "./search/addDocuments.js";
+import { transform } from "./etl/transform.js";
 
 let lastFetchedEvent = 0
 

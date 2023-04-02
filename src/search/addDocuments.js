@@ -19,6 +19,5 @@ export default async (documents) => {
 
   let response = await index.addDocuments(filteredDocuments, { primaryKey: "id" });
 
-  console.log(response); // => { "uid": 0 }
   return response;
 };

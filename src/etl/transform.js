@@ -1,5 +1,4 @@
 // combine the notes with same created_at to one document
-
 import { randomUUID } from "crypto";
 
 export const transform = (documents) => {

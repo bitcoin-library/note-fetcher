@@ -5,8 +5,8 @@ import {
   getEventHash,
   signEvent,
 } from "nostr-tools";
-import bots from "./bots.js";
-import { parseEvent } from "./src/parseEvent.js";
+import bots from "../bots.js";
+import { parseEvent } from "./etl/parseEvent.js";
 import 'websocket-polyfill'
 
 let lastFetch = 0;
