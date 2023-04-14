@@ -1,15 +1,33 @@
 import { randomUUID } from "crypto";
 import bots from "../../bots.js";
+import crypto from "crypto";
 
-function findAddEvent(event, keyword) {
-  const tBot = bots.find((b) => b.id === keyword.uri);
+
+function findAddEvent(event, property) {
+  const tBot = bots.find((b) => b.id === property.uri);
   if (tBot && tBot.pk === event.pubkey) {
-    console.log("found add event");
     return event.id;
   } else {
-    console.log("did not find add event")
-    return null;
+    return event.id;
   }
+}
+
+// create a hash of id
+function hashId(id) {
+  const hash = crypto.createHash("sha256");
+  hash.update(id);
+  return hash.digest("hex");
+}
+
+function parseMetadataArrays(arr, attr, event) {
+  if (!arr[attr]) return [];
+  // we make sure prop is an array
+  const prop = Array.isArray(arr[attr]) ? arr[attr] : [arr[attr]];
+
+  return prop.map((p) => ({
+    ...p,
+    addedByEvent: [findAddEvent(event, p)],
+  }));
 }
 
 /**
@@ -24,19 +42,15 @@ export const parseEvent = (event) => {
 
       if (!id) return null;
 
+      metadata["id"] = hashId(id);
       metadata["uri"] = id;
-      metadata["id"] = randomUUID();
       metadata["created_at"] = event.created_at;
       metadata["eventID"] = event.id;
       metadata["eventIDs"] = [];
-      metadata["keywords"] = metadata.keywords.map((keyword) => ({
-        ...keyword,
-        addedByEvent: findAddEvent(event, keyword),
-      }));
-      metadata["resourceType"] = metadata.resourceType.map((keyword) => ({
-        ...keyword,
-        addedByEvent: findAddEvent(event, keyword),
-      }));
+      metadata["keywords"] = parseMetadataArrays(metadata, "keywords", event);
+      metadata["resourceType"] = parseMetadataArrays(metadata, "resourceType", event);
+      metadata["authors"] = parseMetadataArrays(metadata, "authors", event);
+      metadata["metadataContributor"] = parseMetadataArrays(metadata, "metadataContributor", event);
       // TODO clean up the metadata of tags and resourceType?
       return metadata;
     } else {

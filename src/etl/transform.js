@@ -1,5 +1,6 @@
 // combine the notes with same created_at to one document
 import { randomUUID } from "crypto";
+import crypto from "crypto";
 
 // Check if all objects in an array have defined values for all keys
 const isAllDefined = (arr) => {
@@ -18,14 +19,33 @@ const merge = (arr1, arr2) => {
   }
   const merged = arr1.reduce((acc, obj, index) => {
     const newObj = Object.assign({}, obj);
-    Object.keys(obj).forEach(key => {
-      if (key === 'addedByEvent' && (newObj[key] === undefined || newObj[key] === null)) {
-        const otherObj = index === 0 ? arr2.find(o => o.id === obj.id && o.addedByEvent !== undefined && o.addedByEvent !== null) : arr1.find(o => o.id === obj.id && o.addedByEvent !== undefined && o.addedByEvent !== null);
+    Object.keys(obj).forEach((key) => {
+      if (
+        key === "addedByEvent" &&
+        (newObj[key] === undefined || newObj[key] === null)
+      ) {
+        const otherObj =
+          index === 0
+            ? arr2.find(
+                (o) =>
+                  o.id === obj.id &&
+                  o.addedByEvent !== undefined &&
+                  o.addedByEvent !== null
+              )
+            : arr1.find(
+                (o) =>
+                  o.id === obj.id &&
+                  o.addedByEvent !== undefined &&
+                  o.addedByEvent !== null
+              );
         if (otherObj) {
           newObj[key] = otherObj[key];
         }
       } else if (newObj[key] === undefined || newObj[key] === null) {
-        const otherObj = index === 0 ? arr2.find(o => o[key] !== undefined && o[key] !== null) : arr1.find(o => o[key] !== undefined && o[key] !== null);
+        const otherObj =
+          index === 0
+            ? arr2.find((o) => o[key] !== undefined && o[key] !== null)
+            : arr1.find((o) => o[key] !== undefined && o[key] !== null);
         if (otherObj) {
           newObj[key] = otherObj[key];
         }
@@ -37,6 +57,21 @@ const merge = (arr1, arr2) => {
   return merged;
 };
 
+const merge2 = (arr1, arr2) => {
+  const merged = arr1.map((obj) => {
+    if (obj.addedByEvent[0] !== null) {
+      return obj;
+    } else {
+      const otherObj = arr2.find((o) => o.id === obj.id);
+      if (otherObj && otherObj.addedByEvent[0] !== null) {
+        return otherObj;
+      } else {
+        return obj;
+      }
+    }
+  });
+  return merged;
+};
 
 export const transform = (documents) => {
   const transformed = documents.reduce((accumulator, currentValue) => {
@@ -45,14 +80,21 @@ export const transform = (documents) => {
     );
 
     if (existingObj) {
-      existingObj.id = randomUUID();
       // name must be the same
       // created_at must be the same
-      const keywords = merge(currentValue.keywords, existingObj.keywords);
-      const resourceTye = merge(existingObj.resourceType, currentValue.resourceType);
+      const keywords = merge2(existingObj.keywords, currentValue.keywords);
+      const resourceTye = merge2(
+        existingObj.resourceType,
+        currentValue.resourceType
+      );
       existingObj.keywords = keywords;
       existingObj.resourceType = resourceTye;
       existingObj.eventIDs.push(currentValue.eventID);
+      existingObj.authors = merge2(existingObj.authors, currentValue.authors);
+      existingObj.metadataContributor = merge2(
+        existingObj.metadataContributor,
+        currentValue.metadataContributor
+      );
     } else {
       accumulator.push(currentValue);
     }
