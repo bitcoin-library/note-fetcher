@@ -41,7 +41,6 @@ const documentExists = async (doc) => {
 export default async (documents) => {
   const filteredDocuments = documents.filter(async (doc) => {
     const exists = await documentExists(doc);
-    console.log(exists);
     return !exists;
   });
 

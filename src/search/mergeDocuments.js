@@ -26,24 +26,47 @@ export function mergeDocuments(arr) {
   const sorted = arr.sort((a, b) => {
     return new Date(a.created_at) - new Date(b.created_at);
   });
+  // TODO this should be refactored
   const merged = sorted.reduce((acc, curr) => {
     if (curr?.keywords) {
       const mergedKeywords = mergeProperties(curr.keywords, acc.keywords);
       acc.keywords = mergedKeywords;
-      if (curr?.authors) {
-        
-        const mergedAuthors = mergeProperties(curr.authors, acc.authors);
-        acc.authors = mergedAuthors;
-      }
-      if (curr?.metadataContributor) {
-        const mergedMetadataContributor = mergeProperties(
-          curr.metadataContributor,
-          acc.metadataContributor
-        );
-        acc.metadataContributor = mergedMetadataContributor;
-      }
-      return acc;
     }
+    if (curr?.keywordsAsStrings) {
+      const mergedKeywordsAsStrings = new Set([ ...acc.keywordsAsStrings, ...curr.keywordsAsStrings ]);
+      acc.keywordsAsStrings = [...mergedKeywordsAsStrings];
+    }
+    if (curr?.resourceType) {
+      const mergedResourceTypes = mergeProperties(
+        curr.resourceType,
+        acc.resourceType
+      );
+      acc.resourceType = mergedResourceTypes;
+    }
+    if (curr?.resourceTypeAsStrings) {
+      const mergedResourceTypesAsStrings = new Set([ ...acc.resourceTypeAsStrings, ...curr.resourceTypeAsStrings ]);
+      acc.resourceTypeAsStrings = [...mergedResourceTypesAsStrings];
+    }
+    if (curr?.authors) {
+      const mergedAuthors = mergeProperties(curr.authors, acc.authors);
+      acc.authors = mergedAuthors;
+    }
+    if (curr?.authorsAsStrings) {
+      const mergedAuthorsAsStrings = new Set([ ...acc.authorsAsStrings, ...curr.authorsAsStrings ]);
+      acc.authorsAsStrings = [...mergedAuthorsAsStrings];
+    }
+    if (curr?.metadataContributor) {
+      const mergedMetadataContributors = mergeProperties(
+        curr.metadataContributors,
+        acc.metadataContributors
+      );
+      acc.metadataContributors = mergedMetadataContributors;
+    }
+    if (curr?.metadataContributorsAsStrings) {
+      const mergedMetadataContributorsAsStrings = new Set([ ...acc.metadataContributorsAsStrings, ...curr.metadataContributorsAsStrings ]);
+      acc.metadataContributorsAsStrings = [...mergedMetadataContributorsAsStrings];
+    }
+    return acc;
   }, sorted[0]);
   merged.updated_at = newest.created_at;
   return merged;
