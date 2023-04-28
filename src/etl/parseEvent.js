@@ -49,8 +49,10 @@ export const parseEvent = (event) => {
       metadata["eventIDs"] = [];
       metadata["keywords"] = parseMetadataArrays(metadata, "keywords", event);
       metadata["keywordsAsStrings"] = metadata.keywords.map(e => e.title)
+      metadata["keywordsAsIds"] = metadata.keywords.map(e => e.uri)
       metadata["resourceType"] = parseMetadataArrays(metadata, "resourceType", event);
       metadata["resourceTypeAsStrings"] = metadata.resourceType.map(e => e.title)
+      metadata["resourceTypeAsIds"] = metadata.resourceType.map(e => e.uri)
       metadata["authors"] = parseMetadataArrays(metadata, "authors", event);
       metadata["authorsAsStrings"] = metadata.authors.map(e => e.name)
       metadata["metadataContributors"] = parseMetadataArrays(metadata, "metadataContributor", event);

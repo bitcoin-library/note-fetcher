@@ -40,8 +40,10 @@ export const transform = (documents) => {
       );
       existingObj.keywords = keywords;
       existingObj.keywordsAsStrings = mergeStrings(existingObj.keywordsAsStrings, currentValue.keywordsAsStrings);
+      existingObj.keywordsAsIds = mergeStrings(existingObj.keywordsAsIds, currentValue.keywordsAsIds);
       existingObj.resourceType = resourceTye;
       existingObj.resourceTypeAsStrings = mergeStrings(existingObj.resourceTypeAsStrings, currentValue.resourceTypeAsStrings);
+      existingObj.resourceTypeAsIds = mergeStrings(existingObj.resourceTypeAsIds, currentValue.resourceTypeAsIds);
       existingObj.eventIDs.push(currentValue.eventID);
       existingObj.authors = mergeObjects(existingObj.authors, currentValue.authors);
       existingObj.authorsAsStrings = mergeStrings(existingObj.authorsAsStrings, currentValue.authorsAsStrings);

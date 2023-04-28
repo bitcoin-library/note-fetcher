@@ -36,6 +36,10 @@ export function mergeDocuments(arr) {
       const mergedKeywordsAsStrings = new Set([ ...acc.keywordsAsStrings, ...curr.keywordsAsStrings ]);
       acc.keywordsAsStrings = [...mergedKeywordsAsStrings];
     }
+    if (curr?.keywordsAsIds) {
+      const mergedKeywordsAsIds = new Set([ ...acc.keywordsAsIds, ...curr.keywordsAsIds ]);
+      acc.keywordsAsIds = [...mergedKeywordsAsIds];
+    }
     if (curr?.resourceType) {
       const mergedResourceTypes = mergeProperties(
         curr.resourceType,
@@ -46,6 +50,10 @@ export function mergeDocuments(arr) {
     if (curr?.resourceTypeAsStrings) {
       const mergedResourceTypesAsStrings = new Set([ ...acc.resourceTypeAsStrings, ...curr.resourceTypeAsStrings ]);
       acc.resourceTypeAsStrings = [...mergedResourceTypesAsStrings];
+    }
+    if (curr?.resourceTypeAsIds) {
+      const mergedResourceTypesAsIds = new Set([ ...acc.resourceTypeAsIds, ...curr.resourceTypeAsIds ]);
+      acc.resourceTypeAsIds = [...mergedResourceTypesAsIds];
     }
     if (curr?.authors) {
       const mergedAuthors = mergeProperties(curr.authors, acc.authors);
