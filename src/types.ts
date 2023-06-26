@@ -2,6 +2,7 @@ interface VocabsEntry {
   id: string;
   title: string;
   uri: string;
+  addedByEvent: Array<string>; // we can then use this to be more confident of that setting if array is longer
 }
 
 interface Document {

@@ -5,9 +5,13 @@ client
   .index("nostr_notes")
   .updateFilterableAttributes([
     "id",
+    "eventID",
+    "eventIDs",
     "uri",
     "keywordsAsStrings",
+    "keywordsAsIds",
     "resourceTypeAsStrings",
+    "resourceTypeAsIds",
     "authorsAsStrings",
     "metadataContributorsAsStrings",
   ]);
