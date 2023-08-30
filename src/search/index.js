@@ -14,6 +14,13 @@ client
     "resourceTypeAsIds",
     "authorsAsStrings",
     "metadataContributorsAsStrings",
+  ])
+
+client
+  .index("nostr_notes")
+  .updateSortableAttributes([
+    "created_at"
   ]);
+
 
 export default index;
